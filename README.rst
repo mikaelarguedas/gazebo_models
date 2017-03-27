@@ -3,7 +3,7 @@ gazebo_models
 
 ar_tag models for gazebo
 
-script allowing to generate gazebo models for all the AR tag png images in a folder.
+script allowing to generate gazebo models for all the AR tags in the images folder.
 
 Parameters
 -----------
@@ -15,7 +15,7 @@ Parameters
 
 How to use
 ----------
-copy the marker0 folder in you gazebo nodel directory
+copy the marker0 folder in you gazebo model directory
 
 .. code-block:: bash
 
@@ -23,13 +23,13 @@ copy the marker0 folder in you gazebo nodel directory
 
 Limitations
 -----------
-Tested only on png images, dimansions 170*170px
+Tested only on png images, dimensions 170*170px
 
-blender file provided to test on othe image size
+blender file provided to test on other image size
 
 TODO
 -----
-Test on other images format
+Test on other image formats
 
 Generate sdf 1.5 files also
     

@@ -11,21 +11,21 @@
     <up_axis>Z_UP</up_axis>
   </asset>
   <library_images>
-    <image id="Marker1_png" name="Marker1_png">
+    <image id="Marker0_png" name="Marker0_png">
       <init_from>Marker0.png</init_from>
     </image>
   </library_images>
   <library_effects>
-    <effect id="Marker1Mat-effect">
+    <effect id="Marker0Mat-effect">
       <profile_COMMON>
-        <newparam sid="Marker1_png-surface">
+        <newparam sid="Marker0_png-surface">
           <surface type="2D">
-            <init_from>Marker1_png</init_from>
+            <init_from>Marker0_png</init_from>
           </surface>
         </newparam>
-        <newparam sid="Marker1_png-sampler">
+        <newparam sid="Marker0_png-sampler">
           <sampler2D>
-            <source>Marker1_png-surface</source>
+            <source>Marker0_png-surface</source>
           </sampler2D>
         </newparam>
         <technique sid="common">
@@ -37,7 +37,7 @@
               <color sid="ambient">0.9 0.9 0.9 1</color>
             </ambient>
             <diffuse>
-              <texture texture="Marker1_png-sampler" texcoord="UVMap"/>
+              <texture texture="Marker0_png-sampler" texcoord="UVMap"/>
             </diffuse>
             <specular>
               <color sid="specular">0.5 0.5 0.5 1</color>
@@ -54,8 +54,8 @@
     </effect>
   </library_effects>
   <library_materials>
-    <material id="Marker1Mat-material" name="Marker1Mat">
-      <instance_effect url="#Marker1Mat-effect"/>
+    <material id="Marker0Mat-material" name="Marker0Mat">
+      <instance_effect url="#Marker0Mat-effect"/>
     </material>
   </library_materials>
   <library_geometries>
@@ -93,7 +93,7 @@
         <vertices id="Cube-mesh-vertices">
           <input semantic="POSITION" source="#Cube-mesh-positions"/>
         </vertices>
-        <polylist material="Marker1Mat-material" count="12">
+        <polylist material="Marker0Mat-material" count="12">
           <input semantic="VERTEX" source="#Cube-mesh-vertices" offset="0"/>
           <input semantic="NORMAL" source="#Cube-mesh-normals" offset="1"/>
           <input semantic="TEXCOORD" source="#Cube-mesh-map-0" offset="2" set="0"/>
@@ -106,12 +106,12 @@
   <library_controllers/>
   <library_visual_scenes>
     <visual_scene id="Scene" name="Scene">
-      <node id="Marker1" name="Marker1" type="NODE">
+      <node id="Marker0" name="Marker0" type="NODE">
         <matrix sid="transform">0.004999998 0 0 0 0 0.2499999 0 0 0 0 0.25 0 0 0 0 1</matrix>
         <instance_geometry url="#Cube-mesh">
           <bind_material>
             <technique_common>
-              <instance_material symbol="Marker1Mat-material" target="#Marker1Mat-material">
+              <instance_material symbol="Marker0Mat-material" target="#Marker0Mat-material">
                 <bind_vertex_input semantic="UVMap" input_semantic="TEXCOORD" input_set="0"/>
               </instance_material>
             </technique_common>
