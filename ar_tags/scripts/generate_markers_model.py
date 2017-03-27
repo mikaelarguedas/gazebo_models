@@ -121,6 +121,25 @@ for image_file in file_list:
     f.write(dom.toxml())
     f.close()
 
+    cmd = "cp " + os.path.join(args.gazebodir, filename_without_ext.lower(), "model.sdf") + \
+          " " + os.path.join(args.gazebodir, filename_without_ext.lower(), "model-1_5.sdf")
+    if args.verbose:
+        print(cmd)
+    os.system(cmd)
+
+    # modify model-1_5.sdf
+    if args.verbose:
+        print("open model-1_5.sdf")
+        print(os.path.join(args.gazebodir, filename_without_ext.lower(), "model-1_5.sdf"))
+    dom = parse(os.path.join(args.gazebodir, filename_without_ext.lower(), "model-1_5.sdf"))
+    for node in dom.getElementsByTagName('sdf'):
+        node.attributes["version"].value = "1.5"
+        break
+    f = open(os.path.join(args.gazebodir, filename_without_ext.lower(), "model-1_5.sdf"), 'w+')
+    # Write the modified xml file
+    f.write(dom.toxml())
+    f.close()
+
     meshes_dir = os.path.join(args.gazebodir, filename_without_ext.lower(), "meshes")
     if args.verbose:
         print(os.path.join(meshes_dir, "Marker0.dae") +
