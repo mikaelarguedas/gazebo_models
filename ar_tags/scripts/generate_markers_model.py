@@ -18,12 +18,12 @@ parser.set_defaults(verbose=False)
 
 args = parser.parse_args()
 
+args.gazebodir = os.path.expandvars(args.gazebodir)
+args.input = os.path.expandvars(args.input)
+
 if not os.path.isdir(args.input):
     print("provided input is not a directory")
     sys.exit()
-
-args.gazebodir = os.path.expandvars(args.gazebodir)
-args.input = os.path.expandvars(args.input)
 
 # Open every collada file
 if args.verbose:
