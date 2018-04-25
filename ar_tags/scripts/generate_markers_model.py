@@ -40,16 +40,15 @@ file_list = sorted(os.listdir(args.input))
 for image_file in file_list:
     if not image_file.endswith('.png'):
         continue
-    # ignore marker0 as it has alredy been copied above
-    if image_file.lower() == 'marker0.png':
-        continue
-
     filename_without_ext = image_file[0:image_file.rfind('.')]
-    cmd = "cp -r " + os.path.join(args.gazebodir, "marker0") + \
-          " " + os.path.join(args.gazebodir, filename_without_ext.lower())
-    if args.verbose:
-        print(cmd)
-    os.system(cmd)
+    # ignore marker0 as it has alredy been copied above
+    if not filename_without_ext.lower() == 'marker0':
+        cmd = "cp -r " + os.path.join(args.gazebodir, "marker0") + \
+              " " + os.path.join(args.gazebodir, filename_without_ext.lower())
+        if args.verbose:
+            print(cmd)
+        os.system(cmd)
+
     cmd = "rm " + os.path.join(
         args.gazebodir, filename_without_ext.lower(), "materials", "textures", "*")
     if args.verbose:
