@@ -87,7 +87,7 @@ for image_file in file_list:
         break
 
     scaleModified = False
-    scale = str(int(args.size) / 1000.0)
+    scale = str(int(args.size) / 500.0)
     for node in dom.getElementsByTagName('mesh'):
         for child in node.childNodes:
             if child.nodeName == "scale":
