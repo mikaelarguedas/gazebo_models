@@ -5,17 +5,24 @@ ar_tag models for gazebo
 
 script allowing to generate gazebo models for all the AR tags in the images folder.
 
-Parameters
------------
--i or --input: directory where the marker images are stored (absolute path)
-
--g or --gazebodir: directory of the gazebo models (usually in ~/.gazebo/models) (absolute path)
-
--s or --size: size of the marker in millimeter
-
 How to use
 ----------
-copy the marker0 folder in you gazebo model directory
+
+.. code-block:: bash
+
+    $ ./generate_markers_model.py -h
+    Usage: generate gazebo models for AR tags
+
+    Optional arguments:
+      -h, --help            show this help message and exit
+      -i IMAGES_DIR, --images-dir IMAGES_DIR
+                            directory where the marker images are located
+                            (default: $HOME/gazebo_models/ar_tags/images)
+      -g GAZEBODIR, --gazebodir GAZEBODIR
+                            Gazebo models directory (default:
+                            $HOME/.gazebo/models)
+      -s SIZE, --size SIZE  marker size in mm (default: 500)
+      -v, --verbose         verbose mode (default: False)
 
 .. code-block:: bash
 
@@ -23,13 +30,10 @@ copy the marker0 folder in you gazebo model directory
 
 Limitations
 -----------
-Tested only on png images, dimensions 170*170px
+Assumes png images, dimensions 170*170px
 
 blender file provided to test on other image size
 
 TODO
 -----
-Test on other image formats
-
-Generate sdf 1.5 files also
-    
+Support other image formats

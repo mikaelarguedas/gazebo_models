@@ -6,42 +6,53 @@ from xml.dom.minidom import parse
 import os
 import sys
 
-parser = argparse.ArgumentParser(usage='convert offset of all dae files in a directory')
+parser = argparse.ArgumentParser(
+    usage='generate gazebo models for AR tags',
+    formatter_class=argparse.ArgumentDefaultsHelpFormatter
+)
 parser.add_argument(
-    '-i', '--input', default="$HOME/gazebo_models/ar_tags/images", help='inputDirectory')
+    '-i', '--images-dir',
+    default="$HOME/gazebo_models/ar_tags/images",
+    help='directory where the marker images are located')
 parser.add_argument(
-    '-g', '--gazebodir', default="$HOME/.gazebo/models", help='GazeboNodelDirectory')
+    '-g', '--gazebodir',
+    default="$HOME/.gazebo/models",
+    help='Gazebo models directory')
 parser.add_argument('-s', '--size', default="500", help='marker size in mm')
 parser.add_argument(
-    '-v', '--verbose', dest='verbose', action='store_true', help='verbose mode')
+    '-v', '--verbose',
+    dest='verbose', action='store_true',
+    help='verbose mode')
 parser.set_defaults(verbose=False)
 
 args = parser.parse_args()
 
 args.gazebodir = os.path.expandvars(args.gazebodir)
-args.input = os.path.expandvars(args.input)
+args.images_dir = os.path.expandvars(args.images_dir)
+script_path = os.path.dirname(os.path.realpath(__file__))
+model_dir = os.path.join(os.path.dirname(script_path), 'model')
 
-if not os.path.isdir(args.input):
+if not os.path.isdir(args.images_dir):
     print("provided input is not a directory")
     sys.exit()
 
 # Open every collada file
 if args.verbose:
-    print(args.input)
+    print(args.images_dir)
 
 # Copy marker0 directory into gazebo model directory
-cp_marker0_cmd = "cp -r " + args.input[0:args.input.rfind("images")] + "model/marker0" + \
+cp_marker0_cmd = "cp -r " + os.path.join(model_dir, 'marker0') + \
              " " + os.path.join(args.gazebodir, "marker0")
 if args.verbose:
     print(cp_marker0_cmd)
 os.system(cp_marker0_cmd)
 
-file_list = sorted(os.listdir(args.input))
+file_list = sorted(os.listdir(args.images_dir))
 for image_file in file_list:
     if not image_file.endswith('.png'):
         continue
     filename_without_ext = image_file[0:image_file.rfind('.')]
-    # ignore marker0 as it has alredy been copied above
+    # ignore marker0 as it has already been copied above
     if not filename_without_ext.lower() == 'marker0':
         cmd = "cp -r " + os.path.join(args.gazebodir, "marker0") + \
               " " + os.path.join(args.gazebodir, filename_without_ext.lower())
@@ -50,19 +61,23 @@ for image_file in file_list:
         os.system(cmd)
 
     cmd = "rm " + os.path.join(
-        args.gazebodir, filename_without_ext.lower(), "materials", "textures", "Marker0.png")
+        args.gazebodir, filename_without_ext.lower(),
+        "materials", "textures", "Marker0.png")
     if args.verbose:
         print(cmd)
     os.system(cmd)
-    cmd = "cp " + os.path.join(args.input, image_file) + " " + \
+    cmd = "cp " + os.path.join(args.images_dir, image_file) + " " + \
           os.path.join(args.gazebodir, filename_without_ext.lower(),
                        "materials", "textures")
     if args.verbose:
         print(cmd)
     os.system(cmd)
+
+    model_config_path = os.path.join(
+        args.gazebodir, filename_without_ext.lower(), "model.config")
     if args.verbose:
-        print(os.path.join(args.gazebodir, filename_without_ext.lower(), "model.config"))
-    dom = parse(os.path.join(args.gazebodir, filename_without_ext.lower(), "model.config"))
+        print(model_config_path)
+    dom = parse(model_config_path)
     # modify model.config
     for node in dom.getElementsByTagName('name'):
         node.firstChild.nodeValue = filename_without_ext
@@ -76,10 +91,12 @@ for image_file in file_list:
     f.close()
 
     # modify model.sdf
+    model_noversion_sdf_path = os.path.join(
+        args.gazebodir, filename_without_ext.lower(), "model.sdf")
     if args.verbose:
         print("open model.sdf")
-        print(os.path.join(args.gazebodir, filename_without_ext.lower(), "model.sdf"))
-    dom = parse(os.path.join(args.gazebodir, filename_without_ext.lower(), "model.sdf"))
+        print(model_noversion_sdf_path)
+    dom = parse(model_noversion_sdf_path)
     for node in dom.getElementsByTagName('model'):
         node.attributes["name"].value = filename_without_ext
         if args.verbose:
@@ -95,7 +112,8 @@ for image_file in file_list:
                 scaleModified = True
             if child.nodeName == "uri":
                 child.firstChild.nodeValue = "model://" + os.path.join(
-                    filename_without_ext.lower(), "meshes", filename_without_ext + ".dae")
+                    filename_without_ext.lower(), "meshes",
+                    filename_without_ext + ".dae")
                 if args.verbose:
                     print("uri tag found")
                     print(node.firstChild.nodeValue)
@@ -107,50 +125,54 @@ for image_file in file_list:
             x.appendChild(y)
             node.appendChild(x)
 
-    f = open(os.path.join(args.gazebodir, filename_without_ext.lower(), "model.sdf"), 'w+')
+    f = open(model_noversion_sdf_path, 'w+')
     # Write the modified xml file
     f.write(dom.toxml())
     f.close()
 
-    cmd = "cp " + os.path.join(args.gazebodir, filename_without_ext.lower(), "model.sdf") + \
-          " " + os.path.join(args.gazebodir, filename_without_ext.lower(), "model-1_4.sdf")
+    # modify model-1_4.sdf
+    model_sdf_path = os.path.join(
+        args.gazebodir, filename_without_ext.lower(), "model-1_4.sdf")
+    cmd = "cp " + model_noversion_sdf_path + " " + model_sdf_path
     if args.verbose:
         print(cmd)
     os.system(cmd)
 
-    # modify model-1_4.sdf
     if args.verbose:
         print("open model-1_4.sdf")
-        print(os.path.join(args.gazebodir, filename_without_ext.lower(), "model-1_4.sdf"))
-    dom = parse(os.path.join(args.gazebodir, filename_without_ext.lower(), "model-1_4.sdf"))
+        print(model_sdf_path)
+    dom = parse(model_sdf_path)
     for node in dom.getElementsByTagName('sdf'):
         node.attributes["version"].value = "1.4"
         break
-    f = open(os.path.join(args.gazebodir, filename_without_ext.lower(), "model-1_4.sdf"), 'w+')
+    f = open(model_sdf_path, 'w+')
     # Write the modified xml file
     f.write(dom.toxml())
     f.close()
 
-    cmd = "cp " + os.path.join(args.gazebodir, filename_without_ext.lower(), "model.sdf") + \
-          " " + os.path.join(args.gazebodir, filename_without_ext.lower(), "model-1_5.sdf")
+    # modify model-1_5.sdf
+    model_sdf_path = os.path.join(
+        args.gazebodir, filename_without_ext.lower(), "model-1_5.sdf")
+    cmd = "cp " + model_noversion_sdf_path + \
+          " " + model_sdf_path
     if args.verbose:
         print(cmd)
     os.system(cmd)
 
-    # modify model-1_5.sdf
     if args.verbose:
         print("open model-1_5.sdf")
-        print(os.path.join(args.gazebodir, filename_without_ext.lower(), "model-1_5.sdf"))
-    dom = parse(os.path.join(args.gazebodir, filename_without_ext.lower(), "model-1_5.sdf"))
+        print(model_sdf_path)
+    dom = parse(model_sdf_path)
     for node in dom.getElementsByTagName('sdf'):
         node.attributes["version"].value = "1.5"
         break
-    f = open(os.path.join(args.gazebodir, filename_without_ext.lower(), "model-1_5.sdf"), 'w+')
+    f = open(model_sdf_path, 'w+')
     # Write the modified xml file
     f.write(dom.toxml())
     f.close()
 
-    meshes_dir = os.path.join(args.gazebodir, filename_without_ext.lower(), "meshes")
+    meshes_dir = os.path.join(
+        args.gazebodir, filename_without_ext.lower(), "meshes")
     if args.verbose:
         print(os.path.join(meshes_dir, "Marker0.dae") +
               "  newname " + os.path.join(
