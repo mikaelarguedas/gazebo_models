@@ -50,7 +50,7 @@ for image_file in file_list:
         os.system(cmd)
 
     cmd = "rm " + os.path.join(
-        args.gazebodir, filename_without_ext.lower(), "materials", "textures", "*")
+        args.gazebodir, filename_without_ext.lower(), "materials", "textures", "Marker0.png")
     if args.verbose:
         print(cmd)
     os.system(cmd)
@@ -87,7 +87,7 @@ for image_file in file_list:
         break
 
     scaleModified = False
-    scale = str(int(args.size) / 500.0)
+    scale = str(int(args.size) / 750.0)
     for node in dom.getElementsByTagName('mesh'):
         for child in node.childNodes:
             if child.nodeName == "scale":
