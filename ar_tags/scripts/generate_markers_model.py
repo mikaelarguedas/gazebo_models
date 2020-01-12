@@ -51,7 +51,6 @@ for image_file in file_list:
 
     cmd = "rm " + os.path.join(
         args.gazebodir, filename_without_ext.lower(), "materials", "textures", "Marker0.png")
-#        args.gazebodir, filename_without_ext.lower(), "materials", "textures", "*")
     if args.verbose:
         print(cmd)
     os.system(cmd)
