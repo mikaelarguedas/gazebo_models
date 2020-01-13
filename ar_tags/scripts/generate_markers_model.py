@@ -18,11 +18,19 @@ parser.add_argument(
     '-g', '--gazebodir',
     default="$HOME/.gazebo/models",
     help='Gazebo models directory')
-parser.add_argument('-s', '--size', default="500", help='marker size in mm')
+parser.add_argument(
+    '-s', '--size',
+    default=500, type=int,
+    help='marker size in mm')
 parser.add_argument(
     '-v', '--verbose',
     dest='verbose', action='store_true',
     help='verbose mode')
+
+parser.add_argument(
+    '-w', '--white-contour-size-mm',
+    default=0, type=int,
+    help='Add white contour around images, default to no contour')
 parser.set_defaults(verbose=False)
 
 args = parser.parse_args()
@@ -31,9 +39,13 @@ args.gazebodir = os.path.expandvars(args.gazebodir)
 args.images_dir = os.path.expandvars(args.images_dir)
 script_path = os.path.dirname(os.path.realpath(__file__))
 model_dir = os.path.join(os.path.dirname(script_path), 'model')
+ORIGINAL_MARKER_SIZE_MM = 500
+ORIGINAL_IMAGE_SIZE_PX = 170
+white_contour_px = \
+    args.white_contour_size_mm * ORIGINAL_IMAGE_SIZE_PX / args.size
 
 if not os.path.isdir(args.images_dir):
-    print("provided input is not a directory")
+    print("provided image directory '%s' is not a directory" % args.images_dir)
     sys.exit()
 
 # Open every collada file
@@ -51,6 +63,7 @@ file_list = sorted(os.listdir(args.images_dir))
 for image_file in file_list:
     if not image_file.endswith('.png'):
         continue
+    image_file_path = os.path.join(args.images_dir, image_file)
     filename_without_ext = image_file[0:image_file.rfind('.')]
     # ignore marker0 as it has already been copied above
     if not filename_without_ext.lower() == 'marker0':
@@ -66,12 +79,24 @@ for image_file in file_list:
     if args.verbose:
         print(cmd)
     os.system(cmd)
-    cmd = "cp " + os.path.join(args.images_dir, image_file) + " " + \
-          os.path.join(args.gazebodir, filename_without_ext.lower(),
-                       "materials", "textures")
+    image_dest_path = os.path.join(
+        args.gazebodir,
+        filename_without_ext.lower(),
+        "materials", "textures", image_file)
+    cmd = "cp " + image_file_path + " " + \
+          image_dest_path
     if args.verbose:
         print(cmd)
     os.system(cmd)
+
+    # add white contour if applicable:
+    if white_contour_px > 0:
+        convert_cmd = "convert %s -bordercolor white -border %dx%d %s" % (
+            image_dest_path, white_contour_px,
+            white_contour_px, image_dest_path)
+        if args.verbose:
+            print(convert_cmd)
+        os.system(convert_cmd)
 
     model_config_path = os.path.join(
         args.gazebodir, filename_without_ext.lower(), "model.config")
@@ -104,11 +129,13 @@ for image_file in file_list:
         break
 
     scaleModified = False
-    scale = str(int(args.size) / 750.0)
+    scale = (args.size + 2 * args.white_contour_size_mm) / \
+        float(ORIGINAL_MARKER_SIZE_MM)
     for node in dom.getElementsByTagName('mesh'):
         for child in node.childNodes:
             if child.nodeName == "scale":
-                child.firstChild.nodeValue = scale + " " + scale + " " + scale
+                child.firstChild.nodeValue = \
+                    "{} {} {}".format(scale, scale, scale)
                 scaleModified = True
             if child.nodeName == "uri":
                 child.firstChild.nodeValue = "model://" + os.path.join(
@@ -121,7 +148,7 @@ for image_file in file_list:
             if args.verbose:
                 print("creating scale tag")
             x = dom.createElement("scale")
-            y = dom.createTextNode(scale + " " + scale + " " + scale)
+            y = dom.createTextNode("{} {} {}".format(scale, scale, scale))
             x.appendChild(y)
             node.appendChild(x)
 

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1">
   <asset>
     <contributor>
       <author>Blender User</author>
-      <authoring_tool>Blender 2.79.0 commit date:2017-09-11, commit time:10:43, hash:5bd8ac9</authoring_tool>
+      <authoring_tool>Blender 2.74.0 commit date:2015-03-31, commit time:13:39, hash:000dfc0</authoring_tool>
     </contributor>
-    <created>2018-04-26T11:43:03</created>
-    <modified>2018-04-26T11:43:03</modified>
+    <created>2015-04-05T02:03:25</created>
+    <modified>2015-04-05T02:03:25</modified>
     <unit name="meter" meter="1"/>
     <up_axis>Z_UP</up_axis>
   </asset>
@@ -14,12 +14,9 @@
     <image id="Marker0_png" name="Marker0_png">
       <init_from>Marker0.png</init_from>
     </image>
-    <image id="White" name="White">
-      <init_from>White.png</init_from>
-    </image>
   </library_images>
   <library_effects>
-    <effect id="Mark0Mat-effect">
+    <effect id="Marker0Mat-effect">
       <profile_COMMON>
         <newparam sid="Marker0_png-surface">
           <surface type="2D">
@@ -40,43 +37,7 @@
               <color sid="ambient">0.9 0.9 0.9 1</color>
             </ambient>
             <diffuse>
-              <texture texture="Marker0_png-sampler"/>
-            </diffuse>
-            <specular>
-              <color sid="specular">0.5 0.5 0.5 1</color>
-            </specular>
-            <shininess>
-              <float sid="shininess">50</float>
-            </shininess>
-            <index_of_refraction>
-              <float sid="index_of_refraction">1</float>
-            </index_of_refraction>
-          </phong>
-        </technique>
-      </profile_COMMON>
-    </effect>
-    <effect id="White-effect">
-      <profile_COMMON>
-        <newparam sid="White-surface">
-          <surface type="2D">
-            <init_from>White</init_from>
-          </surface>
-        </newparam>
-        <newparam sid="White-sampler">
-          <sampler2D>
-            <source>White-surface</source>
-          </sampler2D>
-        </newparam>
-        <technique sid="common">
-          <phong>
-            <emission>
-              <color sid="emission">0 0 0 1</color>
-            </emission>
-            <ambient>
-              <color sid="ambient">0.9 0.9 0.9 1</color>
-            </ambient>
-            <diffuse>
-              <texture texture="White-sampler"/>
+              <texture texture="Marker0_png-sampler" texcoord="UVMap"/>
             </diffuse>
             <specular>
               <color sid="specular">0.5 0.5 0.5 1</color>
@@ -93,60 +54,52 @@
     </effect>
   </library_effects>
   <library_materials>
-    <material id="Mark0Mat-material" name="Mark0Mat">
-      <instance_effect url="#Mark0Mat-effect"/>
-    </material>
-    <material id="White-material" name="White">
-      <instance_effect url="#White-effect"/>
+    <material id="Marker0Mat-material" name="Marker0Mat">
+      <instance_effect url="#Marker0Mat-effect"/>
     </material>
   </library_materials>
   <library_geometries>
-    <geometry id="Marker0-mesh" name="Marker0">
+    <geometry id="Cube-mesh" name="Cube">
       <mesh>
-        <source id="Marker0-mesh-positions">
-          <float_array id="Marker0-mesh-positions-array" count="144">0.04399996 0.375 0.375 -0.04399996 0.375 0.375 -0.04399996 -0.375 0.375 0.04399996 -0.375 0.375 0.04399996 0.375 -0.375 -0.04399996 0.375 -0.375 -0.04399996 0.375 0.375 0.04399996 0.375 0.375 0.04399996 -0.375 -0.375 -0.04399996 -0.375 -0.375 -0.04399996 0.375 -0.375 0.04399996 0.375 -0.375 0.04399996 -0.375 0.375 -0.04399996 -0.375 0.375 -0.04399996 -0.375 -0.375 0.04399996 -0.375 -0.375 0.04399996 0.375 -0.375 0.04399996 0.375 0.375 0.04399996 -0.375 0.375 0.04399996 -0.375 -0.375 -0.04399996 0.375 0.375 -0.04399996 0.375 -0.375 -0.04399996 -0.375 -0.375 -0.04399996 -0.375 0.375 0.02933329 0.5 0.5 -0.02933329 0.5 0.5 -0.02933329 -0.5 0.5 0.02933329 -0.5 0.5 0.02933329 0.5 -0.5 -0.02933329 0.5 -0.5 -0.02933329 0.5 0.5 0.02933329 0.5 0.5 0.02933329 -0.5 -0.5 -0.02933329 -0.5 -0.5 -0.02933329 0.5 -0.5 0.02933329 0.5 -0.5 0.02933329 -0.5 0.5 -0.02933329 -0.5 0.5 -0.02933329 -0.5 -0.5 0.02933329 -0.5 -0.5 0.02933329 0.5 -0.5 0.02933329 0.5 0.5 0.02933329 -0.5 0.5 0.02933329 -0.5 -0.5 -0.02933329 0.5 0.5 -0.02933329 0.5 -0.5 -0.02933329 -0.5 -0.5 -0.02933329 -0.5 0.5</float_array>
+        <source id="Cube-mesh-positions">
+          <float_array id="Cube-mesh-positions-array" count="24">1 0.9999999 -9.41753e-6 1 -1 -9.41753e-6 -1 -0.9999998 -9.41753e-6 -0.9999997 1 -9.41753e-6 1 0.9999994 1.999991 0.9999994 -1.000001 1.999991 -1 -0.9999997 1.999991 -0.9999999 1 1.999991</float_array>
           <technique_common>
-            <accessor source="#Marker0-mesh-positions-array" count="48" stride="3">
+            <accessor source="#Cube-mesh-positions-array" count="8" stride="3">
               <param name="X" type="float"/>
               <param name="Y" type="float"/>
               <param name="Z" type="float"/>
             </accessor>
           </technique_common>
         </source>
-        <source id="Marker0-mesh-normals">
-          <float_array id="Marker0-mesh-normals-array" count="18">0 0 1 0 1 0 0 0 -1 0 -1 0 1 0 0 -1 0 0</float_array>
+        <source id="Cube-mesh-normals">
+          <float_array id="Cube-mesh-normals-array" count="36">0 0 -1 0 0 1 1 -5.66244e-7 3.27825e-7 -4.76837e-7 -1 0 -1 2.38419e-7 -1.19209e-7 2.38419e-7 1 1.78814e-7 0 0 -1 0 0 1 1 0 -2.38419e-7 0 -1 -2.98023e-7 -1 2.38419e-7 0 2.98023e-7 1 2.38418e-7</float_array>
           <technique_common>
-            <accessor source="#Marker0-mesh-normals-array" count="6" stride="3">
+            <accessor source="#Cube-mesh-normals-array" count="12" stride="3">
               <param name="X" type="float"/>
               <param name="Y" type="float"/>
               <param name="Z" type="float"/>
             </accessor>
           </technique_common>
         </source>
-        <source id="Marker0-mesh-map-0">
-          <float_array id="Marker0-mesh-map-0-array" count="144">1 1 0 1 0 0 1 0 1 1 0 0 1 1 0 1 0 0 1 0 1 1 0 0 1 1 0 1 0 0 1 0 1 1 0 0 1 1 0 1 0 0 1 0 1 1 0 0 1 1 0 1 0 0 1 0 1 1 0 0 1 1 0 1 0 0 1 0 1 1 0 0 1 1 0 1 0 0 1 0 1 1 0 0 1 1 0 1 0 0 1 0 1 1 0 0 1 1 0 1 0 0 1 0 1 1 0 0 1 1 0 1 0 0 1 0 1 1 0 0 1 1 0 1 0 0 1 0 1 1 0 0 1 1 0 1 0 0 1 0 1 1 0 0</float_array>
+        <source id="Cube-mesh-map-0">
+          <float_array id="Cube-mesh-map-0-array" count="72">0 0 0 0 0 0 0 0 0 0 0 0 0.9999 0.9940189 9.96856e-5 0.9940189 1.00079e-4 9.97642e-5 0 0 0 0 0 0 9.96856e-5 0.9940191 9.98823e-5 9.96856e-5 0.9999004 9.98429e-5 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.9999004 9.96856e-5 0.9999 0.9940189 1.00079e-4 9.97642e-5 0 0 0 0 0 0 0.9999004 0.9940191 9.96856e-5 0.9940191 0.9999004 9.98429e-5 0 0 0 0 0 0</float_array>
           <technique_common>
-            <accessor source="#Marker0-mesh-map-0-array" count="72" stride="2">
+            <accessor source="#Cube-mesh-map-0-array" count="36" stride="2">
               <param name="S" type="float"/>
               <param name="T" type="float"/>
             </accessor>
           </technique_common>
         </source>
-        <vertices id="Marker0-mesh-vertices">
-          <input semantic="POSITION" source="#Marker0-mesh-positions"/>
+        <vertices id="Cube-mesh-vertices">
+          <input semantic="POSITION" source="#Cube-mesh-positions"/>
         </vertices>
-        <triangles material="Mark0Mat-material" count="12">
-          <input semantic="VERTEX" source="#Marker0-mesh-vertices" offset="0"/>
-          <input semantic="NORMAL" source="#Marker0-mesh-normals" offset="1"/>
-          <input semantic="TEXCOORD" source="#Marker0-mesh-map-0" offset="2" set="0"/>
-          <p>0 0 0 1 0 1 2 0 2 3 0 3 0 0 4 2 0 5 4 1 6 5 1 7 6 1 8 7 1 9 4 1 10 6 1 11 8 2 12 9 2 13 10 2 14 11 2 15 8 2 16 10 2 17 12 3 18 13 3 19 14 3 20 15 3 21 12 3 22 14 3 23 16 4 24 17 4 25 18 4 26 19 4 27 16 4 28 18 4 29 20 5 30 21 5 31 22 5 32 23 5 33 20 5 34 22 5 35</p>
-        </triangles>
-        <triangles material="White-material" count="12">
-          <input semantic="VERTEX" source="#Marker0-mesh-vertices" offset="0"/>
-          <input semantic="NORMAL" source="#Marker0-mesh-normals" offset="1"/>
-          <input semantic="TEXCOORD" source="#Marker0-mesh-map-0" offset="2" set="0"/>
-          <p>24 0 36 25 0 37 26 0 38 27 0 39 24 0 40 26 0 41 28 1 42 29 1 43 30 1 44 31 1 45 28 1 46 30 1 47 32 2 48 33 2 49 34 2 50 35 2 51 32 2 52 34 2 53 36 3 54 37 3 55 38 3 56 39 3 57 36 3 58 38 3 59 40 4 60 41 4 61 42 4 62 43 4 63 40 4 64 42 4 65 44 5 66 45 5 67 46 5 68 47 5 69 44 5 70 46 5 71</p>
-        </triangles>
+        <polylist material="Marker0Mat-material" count="12">
+          <input semantic="VERTEX" source="#Cube-mesh-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#Cube-mesh-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#Cube-mesh-map-0" offset="2" set="0"/>
+          <vcount>3 3 3 3 3 3 3 3 3 3 3 3 </vcount>
+          <p>0 0 0 1 0 1 2 0 2 7 1 3 6 1 4 5 1 5 4 2 6 5 2 7 1 2 8 5 3 9 6 3 10 2 3 11 2 4 12 6 4 13 7 4 14 0 5 15 3 5 16 7 5 17 3 6 18 0 6 19 2 6 20 4 7 21 7 7 22 5 7 23 0 8 24 4 8 25 1 8 26 1 9 27 5 9 28 2 9 29 3 10 30 2 10 31 7 10 32 4 11 33 0 11 34 7 11 35</p>
+        </polylist>
       </mesh>
     </geometry>
   </library_geometries>
@@ -154,12 +107,13 @@
   <library_visual_scenes>
     <visual_scene id="Scene" name="Scene">
       <node id="Marker0" name="Marker0" type="NODE">
-        <matrix sid="transform">0.01704546 0 0 0 0 -1.62921e-7 -1 0 0 1 -1.62921e-7 0.5 0 0 0 1</matrix>
-        <instance_geometry url="#Marker0-mesh" name="Marker0">
+        <matrix sid="transform">0.004999998 0 0 0 0 0.2499999 0 0 0 0 0.25 0 0 0 0 1</matrix>
+        <instance_geometry url="#Cube-mesh">
           <bind_material>
             <technique_common>
-              <instance_material symbol="Mark0Mat-material" target="#Mark0Mat-material"/>
-              <instance_material symbol="White-material" target="#White-material"/>
+              <instance_material symbol="Marker0Mat-material" target="#Marker0Mat-material">
+                <bind_vertex_input semantic="UVMap" input_semantic="TEXCOORD" input_set="0"/>
+              </instance_material>
             </technique_common>
           </bind_material>
         </instance_geometry>
